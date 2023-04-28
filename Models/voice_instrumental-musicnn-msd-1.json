@@ -1,0 +1,63 @@
+{
+  "name": "voice/instrumental classifiers",
+  "type": "multi-class classifier",
+  "link": "https://essentia.upf.edu/models/classifiers/voice_instrumental/voice_instrumental-musicnn-msd-1.pb",
+  "version": "1",
+  "description": "classification into music with voice/instrumental",
+  "author": "Pablo Alonso",
+  "email": "pablo.alonso@upf.edu",
+  "release_date": "2020-03-31",
+  "framework": "tensorflow",
+  "framework_version": "1.15.0",
+  "classes": [
+    "instrumental", "voice"],
+  "model_types": [
+    "frozen_model"],
+  "dataset": {
+    "name": "In-house MTG collection",
+    "size": "1000 track excerpts, 500 per class",
+    "metrics": {
+      "5-fold_cross_validation_normalized_accuracy": 0.98
+    }
+  },
+  "schema": {
+    "inputs": [
+      {
+        "name": "model/Placeholder",
+        "type": "float",
+        "shape": [187, 96]
+      }
+    ],
+    "outputs": [
+      {
+        "name": "model/Sigmoid",
+        "type": "float",
+        "shape": [1, 2],
+        "op": "Sigmoid"
+      },
+      {
+        "name": "model/dense_2/BiasAdd",
+        "type": "float",
+        "shape": [1, 2],
+        "op": "fully connected",
+        "description": "logits"
+      },
+      {
+        "name": "model/dense_1/BiasAdd",
+        "type": "float",
+        "shape": [1, 100],
+        "op": "fully connected",
+        "description": "penultimate layer"
+      },
+      {
+        "name": "model/dense/BiasAdd",
+        "type": "float",
+        "shape": [1, 200],
+        "op": "fully connected",
+        "description": "embeddings"
+      }
+    ]
+  },
+  "citation": "@inproceedings{alonso2020tensorflow,\n  title={Tensorflow Audio Models in Essentia},\n  author={Alonso-Jim{\\'e}nez, Pablo and Bogdanov, Dmitry and Pons, Jordi and Serra, Xavier},\n  booktitle={IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},\n  year={2020}\n}"
+
+}
